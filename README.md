@@ -60,6 +60,8 @@ or `Buffer.alloc()` instead.)
 ```javascript
 # chat-rethinkdb/node_modules/rethinkdb/net.js
 
+node --trace-deprecation app.js
+
 - 550: _this.rawSocket.write(Buffer.concat([version, Buffer(message.toString()), nullbyte]));
 + 550: _this.rawSocket.write(Buffer.concat([version, new Buffer(message.toString()), nullbyte]));
 
