@@ -47,6 +47,29 @@ for more configuration options:
 DEBUG=rdb:* node app
 ```
 
+# Fixed fix deprecation issue Node v7.2.0
+
+```
+(DeprecationWarning: Using Buffer without `new` will soon stop working.
+Use `new Buffer()`, or preferably `Buffer.from()`, `Buffer.allocUnsafe()`
+or `Buffer.alloc()` instead.)
+```
+
+>  Edit file ``net.js``
+
+```javascript
+# chat-rethinkdb/node_modules/rethinkdb/net.js
+
+- 550: _this.rawSocket.write(Buffer.concat([version, Buffer(message.toString()), nullbyte]));
++ 550: _this.rawSocket.write(Buffer.concat([version, new Buffer(message.toString()), nullbyte]));
+
+and
+
+- 675 _this.rawSocket.write(Buffer.concat([Buffer(message.toString()), nullbyte]));
++ 675 _this.rawSocket.write(Buffer.concat([new Buffer(message.toString()), nullbyte]));
+
+```
+
 # License #
 
 This demo application is licensed under the MIT license: <http://opensource.org/licenses/mit-license.php>
